@@ -1,0 +1,58 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+public class menuSceneManager : MonoBehaviour
+{
+
+
+    public GameObject optionsPanel;
+    public GameObject exitPanel;
+
+    void Start(){
+
+    }
+
+    public void openGame() {
+        SceneManager.LoadScene("BaseScene");
+        Time.timeScale = 1;
+    }
+
+    public void openMenu() {
+        SceneManager.LoadScene("mainMenu");
+    }
+
+    public void exitGame() {
+        Application.Quit();
+    }
+
+    public void enterOptions() {
+        optionsPanel.SetActive(true);
+    }
+
+    public void exitOptions() {
+        optionsPanel.SetActive(false);
+    }
+
+    public void enterExitPanel() {
+        exitPanel.SetActive(true);
+    }
+
+    public void exitExitPanel() {
+        exitPanel.SetActive(false);
+    }
+
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.Escape) || controllerScript.StartButton()) {
+
+            if (optionsPanel.gameObject.activeInHierarchy) { exitOptions(); }
+
+            else if (exitPanel.gameObject.activeInHierarchy) {
+                exitExitPanel();
+            }
+        }
+    }
+}
