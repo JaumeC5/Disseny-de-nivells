@@ -65,75 +65,6 @@ public class movementPlayer : MonoBehaviour{
         actions = GetComponent<Actions>();
     }
 
-    #region Controller
-    void controllerMovement() {
-        Rigidbody RB = this.GetComponent<Rigidbody>(); //Short player rigibidy body variable name
-        Vector3 playerPos = this.transform.position; //Short player transform
-
-        //Movement implementation
-        if (!statsPlayer.isInvicible) {
-            if (controllerScript.AButton() && isGrounded(this.gameObject)) { //Jump
-                RB.velocity = Vector3.up * jumpForce * (lowJumpMultiplier - 1) * Time.deltaTime; //When player is jumping
-                jumpAgain = true;
-            }
-
-            if (controllerScript.AButton() && jumpAgain == true && !isGrounded(this.gameObject)) { //Jump Again
-                RB.velocity = Vector3.up * jumpForce2 * (lowJumpMultiplier2 - 1) * Time.deltaTime; //When player is jumping
-                jumpAgain = false;
-            }
-
-            if (controllerScript.hAxisLeft()) { //Left
-                RB.transform.position = new Vector3(playerPos.x - speed, playerPos.y, playerPos.z);
-                if (facingRight == false && attackPlayer.attacking == false) {
-                    this.transform.Rotate(Vector3.up, 180);
-                    facingRight = true;
-                }
-            }
-
-            if (controllerScript.hAxisRight()) { //Right
-                RB.transform.position = new Vector3(playerPos.x + speed, playerPos.y, playerPos.z);
-                if (facingRight == true && attackPlayer.attacking == false) {
-                    this.transform.Rotate(Vector3.up, -180);
-                    facingRight = false;
-                }
-            }
-
-            if (controllerScript.hAxisDown()) {
-                RB.velocity = Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-                Physics.IgnoreLayerCollision(10, 9, true);
-            }
-
-            else {
-                if (Timer < Time.time) {
-                    Timer = Time.time + fallingTimer;
-                    Physics.IgnoreLayerCollision(10, 9, false);
-                }
-            }
-
-            if (RB.velocity.y < 0) { RB.velocity = Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime; } //When player is falling
-
-        }
-
-        if (controllerScript.BButton()) { statsPlayer.heal(); }
-
-         //Activate and deactivate collision with enemies
-        if (isImmune) { Physics.IgnoreLayerCollision(9, 14); }
-        if (!isImmune) { Physics.IgnoreLayerCollision(9, 14, false); }
-
-        //Stop knockback on touching ground
-        if (this.GetComponent<statsPlayer>().isInvicible && isGrounded(this.gameObject)) { RB.velocity = new Vector3(0, 0, 0); }
-
-
-        //Control max speed
-        if (RB.velocity.x > maxSpeedX) { RB.velocity = new Vector3(maxSpeedX, RB.velocity.y, RB.velocity.z); }
-
-        if (RB.velocity.x < -maxSpeedX) { RB.velocity = new Vector3(-maxSpeedX, RB.velocity.y, RB.velocity.z); }
-
-        if (RB.velocity.y > maxSpeedY) { RB.velocity = new Vector3(RB.velocity.x, maxSpeedY, RB.velocity.z); }
-
-        if (RB.velocity.y < -maxSpeedY) { RB.velocity = new Vector3(RB.velocity.x, -maxSpeedY, RB.velocity.z); }
-    }
-    #endregion
 
     #region Keyboard
     void keyboardMovement() {
@@ -162,30 +93,13 @@ public class movementPlayer : MonoBehaviour{
                 actions.Jump();
             }
 
-            if (Input.GetKey(KeyCode.A)) { //Left
-                RB.transform.position = new Vector3(playerPos.x - speed, playerPos.y, playerPos.z);
-                Animator.SetBool("isRunning", true);
+            RB.transform.position = new Vector3(playerPos.x + speed, playerPos.y, playerPos.z);
+            Animator.SetBool("isRunning", true);
 
-                if (facingRight == false && attackPlayer.attacking == false) {
-                    this.transform.Rotate(Vector3.up, 180);
-                    facingRight = true;
-                }
-            }
-
-            if (Input.GetKey(KeyCode.D)) { //Right
-                RB.transform.position = new Vector3(playerPos.x + speed, playerPos.y, playerPos.z);
-                Animator.SetBool("isRunning", true);
-
-                if (facingRight == true && attackPlayer.attacking == false) {
-                    this.transform.Rotate(Vector3.up, -180);
-                    facingRight = false;
-                }
-            }
-
-            if (Input.GetKey(KeyCode.S)) {
-                RB.velocity = Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-                Physics.IgnoreLayerCollision(10, 9, true);
-                actions.Idle();
+            if (facingRight == true && attackPlayer.attacking == false)
+            {
+                this.transform.Rotate(Vector3.up, -180);
+                facingRight = false;
             }
 
             else {
