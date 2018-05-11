@@ -81,13 +81,13 @@ public class movementPlayer : MonoBehaviour{
 
         //Movement implementation
         if (!statsPlayer.isInvicible) {
-            if (Input.GetKeyDown(KeyCode.W) && isGrounded(this.gameObject)) { //Jump
+            if (Input.GetKeyDown("space") && isGrounded(this.gameObject)) { //Jump
                 RB.velocity = Vector3.up * jumpForce * (lowJumpMultiplier - 1) * Time.deltaTime; //When player is jumping
                 jumpAgain = true;
                 actions.Jump();
             }
 
-            if (Input.GetKeyDown(KeyCode.W) && jumpAgain == true && !isGrounded(this.gameObject)) { //Jump Again
+			if (Input.GetKeyDown("space") && jumpAgain == true && !isGrounded(this.gameObject)) { //Jump Again
                 RB.velocity = Vector3.up * jumpForce2 * (lowJumpMultiplier2 - 1) * Time.deltaTime; //When player is jumping
                 jumpAgain = false;
                 actions.Jump();

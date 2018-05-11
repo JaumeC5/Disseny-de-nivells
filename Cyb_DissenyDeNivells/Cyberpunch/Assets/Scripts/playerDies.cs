@@ -34,7 +34,7 @@ public class playerDies : MonoBehaviour
     {
         statsPlayer.health = statsPlayer.maxHealth;
         statsPlayer.isAlive = true;
-        SceneManager.LoadScene("BaseScene");
+        SceneManager.LoadScene("mainMenu");
         Time.timeScale = 1;
     }
 }
